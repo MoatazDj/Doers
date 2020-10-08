@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyparser = require('body-parser')
 const cors = require('cors')
+const connectDB = require('./server/config/db.js')
 
 const app = express()
 
@@ -9,7 +10,9 @@ require('dotenv').config({
     path:'./server/config/.env'
 })
 
-// app.use(bodyparser.urlencoded({ extended: false }))
+connectDB()
+
+app.use(bodyparser.urlencoded({ extended: false }))
 app.use(bodyparser.json())
 
 if (process.env.NODE_ENV !== 'development') {
