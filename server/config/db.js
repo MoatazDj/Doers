@@ -7,7 +7,8 @@ const connectDB = async () => {
         useFindAndModify: true,
         useUnifiedTopology: true
     })
-    console.log(`MongoDB is fucking connected! ${connection.connection.host}`)
+    mongoose.connection.once('open',()=>console.log(`MongoDb is Fucking connected!`))
+    mongoose.connection.on('error',(err)=>console.log(err))
 }
 
 

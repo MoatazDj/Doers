@@ -49,7 +49,7 @@ userSchema.methods = {
     //    return Math.round(new Date().valueOf() * Math.random()) + ""
     return await genSalt(10)
     }, 
-    encryptPassword (password) {
+    async encryptPassword (password) {
         if (!password) return ""
         try {
             // return crypto.createHmac("sha256",this.salt)
@@ -60,7 +60,7 @@ userSchema.methods = {
             console.log(err)
         }
     },
-    authenthicate (plainPassword) {
+    async authenthicate (plainPassword) {
         // return this.encryptPassword(plainPassword) === this.hashed_password
         return await compare(plainPassword,this.hashed_password)
     }
