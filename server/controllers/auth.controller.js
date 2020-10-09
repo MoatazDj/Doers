@@ -11,10 +11,9 @@ sgMail.setApiKey(process.env.MAIL_KEY)
 
 exports.registerController = (req, res)=>{
     const{name, email, password} = req.body
-    console.log({name, email, password})
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        const firstError = errors.array.map(error => error.msg)[0]
+        const firstError = errors.array.map((error) => error.msg)[0]
         return res.status(422).json({
             error: firstError
         })
