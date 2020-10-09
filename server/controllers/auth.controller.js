@@ -42,7 +42,7 @@ exports.registerController = (req, res)=>{
 
         const emailData = {
             from: process.env.EMAIL_FROM,
-            to: to,
+            to: process.env.to,
             subject: 'Account activation link',
             html: `
             <h1>Please Click to link to activate</h1>
@@ -52,9 +52,21 @@ exports.registerController = (req, res)=>{
             <p>${process.env.CLIENT_URL}</p>
             `
         }
+        sgMail.send(emailData).then((sent) =>{
+            return res.json({
+                message: `Email has been sent to ${email}`
+            })
+        }).catch((err) => {
+            return res.status(400).json({
+                error : errorHandler(err)
+            })
+        })
     }
     res.json({
         success: true,
         message: 'Register route'
     })
 }
+
+
+"Ommekil9a7ba356789    GOOGLE_CLIENT="
