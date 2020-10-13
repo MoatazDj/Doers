@@ -22,6 +22,7 @@ const uniqueMessage = async (error) =>{
 }
 
 exports.errorHandler = async (error) =>{
+    console.log(JSON.stringify(error.response.body.errors))
     let message = ""
     if (error.code) {
         switch (error.code) {
