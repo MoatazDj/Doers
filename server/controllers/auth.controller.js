@@ -22,12 +22,10 @@ exports.registerController = async (req, res) => {
     const user = await User.findOne({
       email,
     });
-
     if (user)
       return res.status(400).json({
         error: "Email is taken",
       });
-
     const token = jwt.sign(
       {
         name,
@@ -52,7 +50,6 @@ exports.registerController = async (req, res) => {
             `,
     };
     await sgMail.send(emailData);
-
     return res.json({
       message: `Email has been sent to ${email}`,
     });

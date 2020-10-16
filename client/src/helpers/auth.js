@@ -13,7 +13,7 @@ export const setCookie = (key, value) => {
 export const removeCookie = (key) => {
   if (window !== "undefined") {
     cookie.remove(key, {
-      //1 day
+      //2 day
       expires: 2,
     });
   }
