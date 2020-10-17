@@ -24,7 +24,7 @@ const Register = () => {
       if (password1 === password2) {
         console.log({ name, email, password1, password2 });
         axios
-          .post(`${process.env.REACT_APP_API_URL}/api/register`, {
+          .post(`${process.env.REACT_APP_API_URL}/register`, {
             name,
             email,
             password: password1,
@@ -60,7 +60,6 @@ const Register = () => {
               src="https://tailwindui.com/img/logos/workflow-mark-on-white.svg"
               alt="Workflow"
             />
-            <br />
             <br />
             <br />
             <br />
