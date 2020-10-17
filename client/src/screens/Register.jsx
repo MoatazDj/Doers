@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import authSvg from "../assets/auth.svg.jpg";
+import authSvg from "../assets/auth.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import { authenthicate, isAuth } from "../helpers/auth";
 import { axios } from "axios";
@@ -13,8 +13,8 @@ const Register = () => {
     password2: "",
   });
   const { email, name, password1, password2 } = fromData;
+
   const handleChange = (text) => (e) => {
-    console.log(name, email, password1, password2);
     setFormData({ ...fromData, [text]: e.target.value });
   };
 
@@ -22,8 +22,9 @@ const Register = () => {
     e.preventDefault();
     if (name && email && password1) {
       if (password1 === password2) {
+        console.log({ name, email, password1, password2 });
         axios
-          .post(`${process.env.REACT_APP_API_URL}/register`, {
+          .post(`${process.env.REACT_APP_API_URL}/api/register`, {
             name,
             email,
             password: password1,
@@ -53,25 +54,35 @@ const Register = () => {
       {isAuth() ? <Redirect to="/" /> : null}
       <div className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-          <h1 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-            Sign up for some TO-DOS
-          </h1>
-          <form class="mt-8" action="#" method="POST">
-            <input type="hidden" name="remember" value="true" />
-            <div className="rounded-md shadow-sm">
-              <div>
+          <div className="ml-12 flex flex-col items-center">
+            <img
+              className="mx-auto h-12 w-auto"
+              src="https://tailwindui.com/img/logos/workflow-mark-on-white.svg"
+              alt="Workflow"
+            />
+            <br />
+            <br />
+            <br />
+            <br />
+            <h1 className="text-2xl xl:text-3xl font-extrabold">
+              SignUp for some Dev
+            </h1>
+            <form
+              className="w-full flex-1 mt-8 text-indigo-500"
+              onSubmit={handleSubmit}
+            >
+              <input type="hidden" name="remember" value="true" />
+              <div className="mx-auto max-w-xs relative">
                 <input
                   aria-label="Name"
                   name="name"
                   type="name"
                   required
                   className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white "
-                  placeholder="Email address"
+                  placeholder="Name"
                   onChange={handleChange("name")}
                   value={name}
                 />
-              </div>
-              <div>
                 <input
                   aria-label="Email address"
                   name="email"
@@ -82,8 +93,6 @@ const Register = () => {
                   onChange={handleChange("email")}
                   value={email}
                 />
-              </div>
-              <div>
                 <input
                   aria-label="Password"
                   name="password"
@@ -94,8 +103,6 @@ const Register = () => {
                   onChange={handleChange("password1")}
                   value={password1}
                 />
-              </div>
-              <div>
                 <input
                   aria-label="Password"
                   name="password"
@@ -107,9 +114,8 @@ const Register = () => {
                   value={password2}
                 />
               </div>
-            </div>
 
-            {/* <div class="mt-6 flex items-center justify-between">
+              {/* <div class="mt-6 flex items-center justify-between">
               <div class="flex items-center">
                 <input
                   id="remember_me"
@@ -124,7 +130,7 @@ const Register = () => {
                 </label>
               </div> */}
 
-            {/* <div class="text-sm leading-5">
+              {/* <div class="text-sm leading-5">
                 <a
                   href="#"
                   class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
@@ -134,17 +140,17 @@ const Register = () => {
               </div>
             </div> */}
 
-            <button
-              type="submit"
-              className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
-            >
-              Register
-            </button>
-            <div className="my-12 border-b text-center">
-              <div className="leading-none px-2 inline-block text-gray-600 tracking-wide font-medium bg-white transorm translate-y-1/2">
-                Or sign in with email or social login
-              </div>
-              {/* <button
+              <button
+                type="submit"
+                className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
+              >
+                Register
+              </button>
+              <div className="my-12 border-b text-center">
+                <div className="leading-none px-2 inline-block text-gray-600 tracking-wide font-medium bg-white transorm translate-y-1/2">
+                  Or sign in with email or social login
+                </div>
+                {/* <button
                 type="submit"
                 class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
               >
@@ -163,22 +169,23 @@ const Register = () => {
                 </span>
                 Sign in
               </button> */}
-            </div>
-            <div className="flex flex-col items-center">
-              <a
-                href="/"
-                className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus focus:shadow-sm focus:shadow-outline mt-5"
-              >
-                Sign In
-              </a>
-            </div>
-          </form>
+              </div>
+              <div className="flex flex-col items-center">
+                <a
+                  href="/"
+                  className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus focus:shadow-sm focus:shadow-outline mt-5"
+                >
+                  Sign In
+                </a>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-      <div className="flex-1 bg-indigo-indigo-100 text-center hidden lg:flex">
-        {/* <div className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat">
-          <style>{{ backgroundImage: `url(${authSvg})` }}</style>
-        </div> */}
+        <div className="flex-1 bg-indigo-indigo-100 text-center hidden lg:flex">
+          <div className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat">
+            <img src={authSvg}></img>
+          </div>
+        </div>
       </div>
     </div>
   );
