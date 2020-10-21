@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import authSvg from "../assets/auth.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import { authenthicate, isAuth } from "../helpers/auth";
-import { axios } from "axios";
+import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 const Register = () => {
@@ -24,7 +24,7 @@ const Register = () => {
       if (password1 === password2) {
         console.log({ name, email, password1, password2 });
         axios
-          .post(`${process.env.REACT_APP_API_URL}/register`, {
+          .post(`${process.env.REACT_APP_API_URL}register`, {
             name,
             email,
             password: password1,
@@ -37,9 +37,11 @@ const Register = () => {
               password1: "",
               password2: "",
             });
+            console.log(res);
             toast.success(res.data.message);
           })
           .catch((err) => {
+            console.log(err.response.data.error);
             toast.error(err.response.data.error);
           });
       } else {
@@ -172,7 +174,8 @@ const Register = () => {
               <div className="flex flex-col items-center">
                 <a
                   href="/"
-                  className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus focus:shadow-sm focus:shadow-outline mt-5"
+                  className="w-full max-w-xs font-bold shadow-sm rounded-lg 
+                  py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus focus:shadow-sm focus:shadow-outline mt-5"
                 >
                   Sign In
                 </a>
