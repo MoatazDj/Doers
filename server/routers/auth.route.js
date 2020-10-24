@@ -1,10 +1,17 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 const {
-    registerController
-} = require('../controllers/auth.controller.js')
+  validRegister,
+  ValidLogin,
+  forgotPasswordValidator,
+  resetPasswordValidator,
+} = require("../helpers/valid");
+const {
+  registerController,
+  activationController,
+} = require("../controllers/auth.controller.js");
 
+router.post("/register", validRegister, registerController);
+router.post("/activation", activationController);
 
-router.post('/register', registerController)
-
-module.exports = router
+module.exports = router;
