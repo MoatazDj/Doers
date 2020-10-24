@@ -10,6 +10,7 @@ const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.MAIL_KEY);
 
 exports.registerController = async (req, res) => {
+  console.log(req.body);
   const { name, email, password } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

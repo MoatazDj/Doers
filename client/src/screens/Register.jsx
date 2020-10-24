@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import authSvg from "../assets/auth.jpg";
-import { ToastContainer, toast } from "react-toastify";
-import { authenthicate, isAuth } from "../helpers/auth";
 import axios from "axios";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import authSvg from "../assets/auth.jpg";
+import { isAuth } from "../helpers/auth";
 
 const Register = () => {
   const [fromData, setFormData] = useState({
@@ -18,38 +19,34 @@ const Register = () => {
     setFormData({ ...fromData, [text]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (name && email && password1) {
       if (password1 === password2) {
         console.log({ name, email, password1, password2 });
-        axios
-          .post(`${process.env.REACT_APP_API_URL}register`, {
-            name,
-            email,
-            password: password1,
-          })
-          .then((res) => {
-            setFormData({
-              ...fromData,
-              name: "",
-              email: "",
-              password1: "",
-              password2: "",
-            });
-            console.log(res);
-            toast.success(res.data.message);
-          })
-          .catch((err) => {
-            console.log(err.response.data.error);
-            toast.error(err.response.data.error);
+        console.log(`${process.env.REACT_APP_API_URL}register`);
+        try {
+          const res = await axios.post(
+            `${process.env.REACT_APP_API_URL}/register`,
+            {
+              name,
+              email,
+              password: password1,
+            }
+          );
+          setFormData({
+            ...fromData,
+            name: "",
+            email: "",
+            password1: "",
+            password2: "",
           });
-      } else {
-        toast.error("Passwords dosen't match");
-      }
-    } else {
-      toast.error("Please fill all fields");
-    }
+          toast.success(res.data.message);
+        } catch (err) {
+          toast.error(err.response.data.error);
+        }
+      } else toast.error("Passwords dosen't match");
+    } else toast.error("Please fill all fields");
   };
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
@@ -116,31 +113,6 @@ const Register = () => {
                 />
               </div>
 
-              {/* <div class="mt-6 flex items-center justify-between">
-              <div class="flex items-center">
-                <input
-                  id="remember_me"
-                  type="checkbox"
-                  class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                />
-                <label
-                  for="remember_me"
-                  class="ml-2 block text-sm leading-5 text-gray-900"
-                >
-                  Remember me
-                </label>
-              </div> */}
-
-              {/* <div class="text-sm leading-5">
-                <a
-                  href="#"
-                  class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                >
-                  Forgot your password?
-                </a>
-              </div>
-            </div> */}
-
               <button
                 type="submit"
                 className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
@@ -151,25 +123,6 @@ const Register = () => {
                 <div className="leading-none px-2 inline-block text-gray-600 tracking-wide font-medium bg-white transorm translate-y-1/2">
                   Or sign in with email or social login
                 </div>
-                {/* <button
-                type="submit"
-                class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-              >
-                <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <svg
-                    class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400 transition ease-in-out duration-150"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </span>
-                Sign in
-              </button> */}
               </div>
               <div className="flex flex-col items-center">
                 <a
@@ -189,6 +142,7 @@ const Register = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
