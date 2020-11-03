@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "react-toastify/dist/react-toastify.cjs.development";
 import App from "./App";
 import Register from "./screens/Register";
+import Activate from "./screens/Activate";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -13,6 +14,11 @@ ReactDOM.render(
         path="/register"
         exact
         render={(props) => <Register {...props} />}
+      />
+      <Route
+        path="/users/activate/:token"
+        exact
+        render={(props) => <Activate {...props} />}
       />
     </Switch>
   </BrowserRouter>,
