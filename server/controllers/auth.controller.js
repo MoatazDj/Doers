@@ -8,6 +8,7 @@ const { validationResult } = require("express-validator");
 const { errorHandler } = require("../helpers/dbErrorHandling");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.MAIL_KEY);
+const { makeSalt, encryptPassword } = require("../models/utils.js");
 
 exports.registerController = async (req, res) => {
   console.log(req.body);
@@ -35,7 +36,7 @@ exports.registerController = async (req, res) => {
       },
       process.env.ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "30m",
+        expiresIn: "30h",
       }
     );
     const emailData = {
@@ -65,42 +66,26 @@ exports.registerController = async (req, res) => {
 exports.activationController = async (req, res) => {
   try {
     const { token } = req.body;
-    console.log(token);
-    if (token) {
-      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if (err) {
-          console.log(err);
-          return res.status(401).json({
-            error: "Expired Token. Signup again",
-          });
-        } else {
-          console.log(jwt.decode(token));
-          const { name, email, password } = jwt.decode(token);
-          console.log({ name, email, password });
-          const user = new User({
-            name,
-            email,
-            password,
-          });
-          console.log("user ", user);
-          user.save((err, user) => {
-            if (err) {
-              console.log(err);
-              return res.status(401).json({
-                error: errorHandler(err),
-              });
-            } else {
-              console.log(user);
-              return res.json({
-                success: true,
-                message: "SignUp success",
-                user,
-              });
-            }
-          });
-        }
+    if (!token) throw new Error("No token");
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decode) => {
+      if (err)
+        return res.status(401).json({
+          error: "Expired Token. Signup again",
+        });
+      const { name, email, password } = decode;
+      const salt = await makeSalt();
+      const hashed_password = await encryptPassword(password, salt);
+      User.create({
+        email,
+        name,
+        hashed_password,
+        salt,
       });
-    }
+      return res.json({
+        success: true,
+        message: "SignUp success",
+      });
+    });
   } catch (error) {
     console.log(error);
     return res.json({
