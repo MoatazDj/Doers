@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "react-toastify/dist/react-toastify.cjs.development";
 import App from "./App";
+import Login from "./screens/Login.jsx";
 import Register from "./screens/Register";
 import Activate from "./screens/Activate";
 
@@ -20,6 +21,7 @@ ReactDOM.render(
         exact
         render={(props) => <Activate {...props} />}
       />
+      <Route path="/login" exact render={(props) => <Login {...props} />} />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")

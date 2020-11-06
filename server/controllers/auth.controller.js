@@ -8,7 +8,11 @@ const { validationResult } = require("express-validator");
 const { errorHandler } = require("../helpers/dbErrorHandling");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.MAIL_KEY);
-const { makeSalt, encryptPassword,authenthicate } = require("../models/utils.js");
+const {
+  makeSalt,
+  encryptPassword,
+  authenthicate,
+} = require("../models/utils.js");
 
 exports.registerController = async (req, res) => {
   console.log(req.body);
@@ -102,20 +106,39 @@ exports.loginController = async (req, res) => {
     return res.status(422).json({
       error: firstError,
     });
-  }else{
-    User.findOne({
-      email
-    }).exact((err,user) => {
-        if (!user || err) {
-          return res.status(400).json({
-            error: "Email does not exist you asshole. Signup 3asba!"
-          })
+  } else {
+    await User.findOne({
+      email,
+    }).exec(async (err, user) => {
+      if (!user || err) {
+        return res.status(400).json({
+          error: "Email does not exist you asshole. Signup 3asba!",
+        });
+      }
+      if (!authenthicate(password)) {
+        return res.status(400).json({
+          error: "Email and password do not match ya sereg ya nayek",
+        });
+      }
+      const token = await jwt.sign(
+        {
+          _id: user._id,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "7d",
         }
-        if (!user.authenthicate(password)) {
-          return res.status(400).json({
-            
-          })
-        }
-    })
+      );
+      const { _id, email, name, role } = user;
+      return res.json({
+        token,
+        user: {
+          _id,
+          name,
+          email,
+          role,
+        },
+      });
+    });
   }
 };

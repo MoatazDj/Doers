@@ -6,14 +6,12 @@ import "react-toastify/dist/ReactToastify.css";
 import authSvg from "../assets/auth.jpg";
 import { isAuth } from "../helpers/auth";
 
-const Register = () => {
+const Login = () => {
   const [fromData, setFormData] = useState({
-    name: "",
     email: "",
     password1: "",
-    password2: "",
   });
-  const { email, name, password1, password2 } = fromData;
+  const { email, password1 } = fromData;
 
   const handleChange = (text) => (e) => {
     setFormData({ ...fromData, [text]: e.target.value });
@@ -21,31 +19,25 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (name && email && password1) {
-      if (password1 === password2) {
-        console.log({ name, email, password1, password2 });
-        console.log(`${process.env.REACT_APP_API_URL}register`);
-        try {
-          const res = await axios.post(
-            `${process.env.REACT_APP_API_URL}/register`,
-            {
-              name,
-              email,
-              password: password1,
-            }
-          );
-          setFormData({
-            ...fromData,
-            name: "",
-            email: "",
-            password1: "",
-            password2: "",
-          });
-          toast.success(res.data.message);
-        } catch (err) {
-          toast.error(err.response.data.error);
-        }
-      } else toast.error("Passwords dosen't match");
+    if (email && password1) {
+      console.log(`${process.env.REACT_APP_API_URL}register`);
+      try {
+        const res = await axios.post(
+          `${process.env.REACT_APP_API_URL}/register`,
+          {
+            email,
+            password: password1,
+          }
+        );
+        setFormData({
+          ...fromData,
+          email: "",
+          password1: "",
+        });
+        toast.success(res.data.message);
+      } catch (err) {
+        toast.error(err.response.data.error);
+      }
     } else toast.error("Please fill all fields");
   };
   return (
@@ -62,25 +54,13 @@ const Register = () => {
             <br />
             <br />
             <br />
-            <h1 className="text-2xl xl:text-3xl font-extrabold">
-              SignUp for some Dev
-            </h1>
+            <h1 className="text-2xl xl:text-3xl font-extrabold">Login Nigga</h1>
             <form
               className="w-full flex-1 mt-8 text-indigo-500"
               onSubmit={handleSubmit}
             >
               <input type="hidden" name="remember" value="true" />
               <div className="mx-auto max-w-xs relative">
-                <input
-                  aria-label="Name"
-                  name="name"
-                  type="name"
-                  required
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white "
-                  placeholder="Name"
-                  onChange={handleChange("name")}
-                  value={name}
-                />
                 <input
                   aria-label="Email address"
                   name="email"
@@ -101,36 +81,26 @@ const Register = () => {
                   onChange={handleChange("password1")}
                   value={password1}
                 />
-                <input
-                  aria-label="Password"
-                  name="password"
-                  type="password"
-                  required
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  placeholder="Confirm password"
-                  onChange={handleChange("password2")}
-                  value={password2}
-                />
               </div>
 
               <button
                 type="submit"
                 className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
               >
-                Register
+                Login
               </button>
               <div className="my-12 border-b text-center">
                 <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transorm translate-y-1/2">
-                  Or sign in with email or social login
+                  Or sign Up as a new user
                 </div>
               </div>
               <div className="flex flex-col items-center">
                 <a
-                  href="/login"
+                  href="/register"
                   className="w-full max-w-xs font-bold shadow-sm rounded-lg 
                   py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus focus:shadow-sm focus:shadow-outline mt-5"
                 >
-                  Sign In
+                  Sign Up
                 </a>
               </div>
             </form>
@@ -147,4 +117,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
