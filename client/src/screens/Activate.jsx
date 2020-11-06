@@ -17,7 +17,7 @@ const Activate = ({ match }) => {
     const token = match.params.token;
     const name = jwt.decode(token);
     if (token) {
-      setFormData = { ...formData, name, token };
+      setFormData({ ...formData, name, token });
     }
   }, []);
   const { name, token, show } = formData;
@@ -31,12 +31,13 @@ const Activate = ({ match }) => {
         }
       );
       setFormData({
-        ...fromData,
+        ...formData,
         show: false,
       });
       toast.success(res.data.message);
-    } catch (error) {
-      toast.error(error.response.data.error);
+    } catch (err) {
+      console.log("esta    ", err);
+      toast.error(err.response.data.error);
     }
   };
   return (
@@ -45,7 +46,7 @@ const Activate = ({ match }) => {
       <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
         <div className="ml-12 flex flex-col items-center">
           <h1 className="text-2xl xl:text-3xl font-extrabold">
-            welcome {name}
+            welcome {name.name}
           </h1>
           <form
             onSubmit={handleSubmit}

@@ -9,9 +9,11 @@ const {
 const {
   registerController,
   activationController,
+  loginController,
 } = require("../controllers/auth.controller.js");
 
 router.post("/register", registerController);
+router.post("/login", loginController);
 router.post("/activation", activationController);
 
 module.exports = router;

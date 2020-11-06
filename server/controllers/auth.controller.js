@@ -8,7 +8,7 @@ const { validationResult } = require("express-validator");
 const { errorHandler } = require("../helpers/dbErrorHandling");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.MAIL_KEY);
-const { makeSalt, encryptPassword } = require("../models/utils.js");
+const { makeSalt, encryptPassword,authenthicate } = require("../models/utils.js");
 
 exports.registerController = async (req, res) => {
   console.log(req.body);
@@ -91,5 +91,31 @@ exports.activationController = async (req, res) => {
     return res.json({
       message: "Error happening. Please try again",
     });
+  }
+};
+
+exports.loginController = async (req, res) => {
+  const { email, password } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const firstError = errors.array.map((error) => error.msg)[0];
+    return res.status(422).json({
+      error: firstError,
+    });
+  }else{
+    User.findOne({
+      email
+    }).exact((err,user) => {
+        if (!user || err) {
+          return res.status(400).json({
+            error: "Email does not exist you asshole. Signup 3asba!"
+          })
+        }
+        if (!user.authenthicate(password)) {
+          return res.status(400).json({
+            
+          })
+        }
+    })
   }
 };

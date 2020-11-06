@@ -4,7 +4,7 @@ const path = require("path");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const connectDB = require("./server/config/db.js");
-const pathFile = path.join(__dirname, "client", "build");
+// const pathFile = path.join(__dirname, "client", "build");
 const app = express();
 
 require("dotenv").config({
@@ -12,19 +12,20 @@ require("dotenv").config({
 });
 
 connectDB();
-app.use(express.static(pathFile));
+app.use(cors());
+// app.use(express.static(pathFile));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
-if (process.env.NODE_ENV !== "development") {
-  app.options(
-    "*",
-    cors({
-      origin: process.env.CLIENT_URL,
-    })
-  );
-  app.use(morgan("dev"));
-}
+// if (process.env.NODE_ENV !== "development") {
+//   app.options(
+//     "*",
+//     cors({
+//       origin: process.env.CLIENT_URL,
+//     })
+//   );
+//   app.use(morgan("dev"));
+// }
 
 const authRouter = require("./server/routers/auth.route.js");
 
