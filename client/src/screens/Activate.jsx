@@ -36,7 +36,6 @@ const Activate = ({ match }) => {
       });
       toast.success(res.data.message);
     } catch (err) {
-      console.log("esta    ", err);
       toast.error(err.response.data.error);
     }
   };
@@ -46,6 +45,11 @@ const Activate = ({ match }) => {
       <div className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
           <div className="ml-12 flex flex-col items-center">
+            <img
+              className="mx-auto h-12 w-auto"
+              src="https://tailwindui.com/img/logos/v1/workflow-mark-on-white.svg"
+              alt="Workflow"
+            />
             <h1 className="text-2xl xl:text-3xl font-extrabold">
               welcome {name.name}
             </h1>
@@ -55,9 +59,10 @@ const Activate = ({ match }) => {
             >
               <button
                 type="submit"
-                className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
               >
-                Activate your account
+                <i className="fas fa-sign-in-alt w-6 -ml-2" />
+                <span className="mt-3">Acctivate Your Account</span>
               </button>
               <div className="my-12 border-b text-center">
                 <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transorm translate-y-1/2">

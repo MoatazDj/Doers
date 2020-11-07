@@ -23,8 +23,6 @@ const Register = () => {
     e.preventDefault();
     if (name && email && password1) {
       if (password1 === password2) {
-        console.log({ name, email, password1, password2 });
-        console.log(`${process.env.REACT_APP_API_URL}register`);
         try {
           const res = await axios.post(
             `${process.env.REACT_APP_API_URL}/register`,
@@ -56,7 +54,7 @@ const Register = () => {
           <div className="ml-12 flex flex-col items-center">
             <img
               className="mx-auto h-12 w-auto"
-              src="https://tailwindui.com/img/logos/workflow-mark-on-white.svg"
+              src="https://tailwindui.com/img/logos/v1/workflow-mark-on-white.svg"
               alt="Workflow"
             />
             <br />
@@ -65,12 +63,12 @@ const Register = () => {
             <h1 className="text-2xl xl:text-3xl font-extrabold">
               SignUp for some Dev
             </h1>
-            <form
+            <div
               className="w-full flex-1 mt-8 text-indigo-500"
               onSubmit={handleSubmit}
             >
               <input type="hidden" name="remember" value="true" />
-              <div className="mx-auto max-w-xs relative">
+              <form className="mx-auto max-w-xs relative">
                 <input
                   aria-label="Name"
                   name="name"
@@ -111,19 +109,20 @@ const Register = () => {
                   onChange={handleChange("password2")}
                   value={password2}
                 />
-              </div>
-
-              <button
-                type="submit"
-                className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
-              >
-                Register
-              </button>
-              <div className="my-12 border-b text-center">
-                <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transorm translate-y-1/2">
-                  Or sign in with email or social login
+                <button
+                  type="submit"
+                  className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
+                >
+                  <i className="fas fa-sign-in-alt w-6 -ml-2" />
+                  <span className="mt-3">Submit</span>
+                </button>
+                <div className="my-12 border-b text-center">
+                  <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transorm translate-y-1/2">
+                    Or sign in with email or social login
+                  </div>
                 </div>
-              </div>
+              </form>
+
               <div className="flex flex-col items-center">
                 <a
                   href="/login"
@@ -133,7 +132,7 @@ const Register = () => {
                   Sign In
                 </a>
               </div>
-            </form>
+            </div>
           </div>
         </div>
         <div className="flex-1 bg-indigo-indigo-100 text-center hidden lg:flex">

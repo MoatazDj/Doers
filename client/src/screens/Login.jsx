@@ -4,9 +4,9 @@ import { Redirect } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import authSvg from "../assets/auth.jpg";
-import { isAuth } from "../helpers/auth";
+import { isAuth, authenthicate } from "../helpers/auth";
 
-const Login = () => {
+const Login = ({ history }) => {
   const [fromData, setFormData] = useState({
     email: "",
     password1: "",
@@ -20,21 +20,22 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (email && password1) {
-      console.log(`${process.env.REACT_APP_API_URL}register`);
       try {
-        const res = await axios.post(
-          `${process.env.REACT_APP_API_URL}/register`,
-          {
-            email,
-            password: password1,
-          }
-        );
-        setFormData({
-          ...fromData,
-          email: "",
-          password1: "",
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {
+          email,
+          password: password1,
         });
-        toast.success(res.data.message);
+        authenthicate(res, () => {
+          setFormData({
+            ...fromData,
+            email: "",
+            password1: "",
+          });
+        });
+        isAuth() && isAuth().role === "admin"
+          ? history.push("/admin")
+          : history.push("/private");
+        toast.success(`Hey ${res.data.user.name}, welcome back`);
       } catch (err) {
         toast.error(err.response.data.error);
       }
@@ -48,7 +49,7 @@ const Login = () => {
           <div className="ml-12 flex flex-col items-center">
             <img
               className="mx-auto h-12 w-auto"
-              src="https://tailwindui.com/img/logos/workflow-mark-on-white.svg"
+              src="https://tailwindui.com/img/logos/v1/workflow-mark-on-white.svg"
               alt="Workflow"
             />
             <br />
@@ -59,7 +60,6 @@ const Login = () => {
               className="w-full flex-1 mt-8 text-indigo-500"
               onSubmit={handleSubmit}
             >
-              <input type="hidden" name="remember" value="true" />
               <div className="mx-auto max-w-xs relative">
                 <input
                   aria-label="Email address"
@@ -81,16 +81,25 @@ const Login = () => {
                   onChange={handleChange("password1")}
                   value={password1}
                 />
+
+                <button
+                  type="submit"
+                  className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
+                >
+                  <i className="fas fa-sign-in-alt w-6 -ml-2" />
+                  <span className="mt-3">Login</span>
+                </button>
+                <br />
+                <a
+                  href="/users/password/forgot"
+                  className="no-underline hover:underline text-indigo-500 text-md text-right absolute right-0 mt-2"
+                >
+                  Forgot password?
+                </a>
               </div>
 
-              <button
-                type="submit"
-                className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
-              >
-                Login
-              </button>
               <div className="my-12 border-b text-center">
-                <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transorm translate-y-1/2">
+                <div className="leading-none px-2 inline-block text text-gray-600 tracking-wide font-medium bg-white transorm translate-y-1/2">
                   Or sign Up as a new user
                 </div>
               </div>
