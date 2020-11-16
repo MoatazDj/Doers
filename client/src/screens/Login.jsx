@@ -55,7 +55,7 @@ const Login = ({ history }) => {
             <br />
             <br />
             <br />
-            <h1 className="text-2xl xl:text-3xl font-extrabold">Login Nigga</h1>
+            <h1 className="text-2xl xl:text-3xl font-extrabold">Login</h1>
             <form
               className="w-full flex-1 mt-8 text-indigo-500"
               onSubmit={handleSubmit}

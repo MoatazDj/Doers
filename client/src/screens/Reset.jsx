@@ -31,11 +31,13 @@ const Reset = ({ match }) => {
           }
         );
         setFormData({ ...formData, password1: "", password2: "" });
-        toast.success((await res).data.message);
+        console.log(res.data);
+        toast.success(res.data.message);
       } else {
         toast.error("Passwords don't match");
       }
     } catch (err) {
+      console.log(err);
       toast.error(`Something is wrong, ${err.response.data.error}`);
     }
   };

@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import authSvg from "../assets/auth.jpg";
+import { isAuth } from "../helpers/auth";
 
 const Forgot = () => {
   const [fromData, setFormData] = useState({
@@ -18,21 +20,27 @@ const Forgot = () => {
     e.preventDefault();
     if (email) {
       try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/password/forgot`, {
-          email,
-        });
+        const res = await axios.put(
+          `${process.env.REACT_APP_API_URL}/password/forgot`,
+          {
+            email,
+          }
+        );
         setFormData({
           ...fromData,
           email: "",
         });
-        toast.success("Please check your email!");
+        console.log(res);
+        toast.success(`Please check your email! ${res.data.message}`);
       } catch (err) {
+        console.log("esta la fiesta =>>>>>>>>>>>>>>>>", err);
         toast.error(err.response.data.error);
       }
     }
   };
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+      {isAuth() ? <Redirect to="/" /> : null}
       <div className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
           <div className="ml-12 flex flex-col items-center">
@@ -68,7 +76,7 @@ const Forgot = () => {
                 type="submit"
                 className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out"
               >
-                <i className="fas fa-sign-in-alt w-6 -ml-2" />
+                <i className="fas fa-sign-in-alt w-6 ml-2" />
                 <span className="mt-3">Submit</span>
               </button>
             </form>

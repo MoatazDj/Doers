@@ -106,7 +106,8 @@ exports.loginController = async (req, res) => {
     return res.status(422).json({
       error: firstError,
     });
-  } else {
+  }
+  try {
     await User.findOne({
       email,
     }).exec(async (err, user) => {
@@ -139,6 +140,11 @@ exports.loginController = async (req, res) => {
           role,
         },
       });
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      error: error.message,
     });
   }
 };
@@ -208,6 +214,7 @@ exports.forgotController = async (req, res) => {
 
 exports.resetController = async (req, res) => {
   const { resetPasswordLink, newPassword } = req.body;
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const firstError = errors.array.map((error) => error.msg)[0];
     return res.status(422).json({
@@ -215,8 +222,9 @@ exports.resetController = async (req, res) => {
     });
   }
   try {
+    console.log(resetPasswordLink);
     if (resetPasswordLink) {
-      await jwt.verify(
+      jwt.verify(
         resetPasswordLink,
         process.env.JWT_RESET_PASSWORD,
         async (err, decode) => {
@@ -227,7 +235,7 @@ exports.resetController = async (req, res) => {
           }
           await User.findOne({ resetPasswordLink }, async (err, user) => {
             if (err || !user) {
-              return res.status(400).json({
+              return res.status(400).jlson({
                 error: "Something went wrong. Try Later",
               });
             }
@@ -243,12 +251,17 @@ exports.resetController = async (req, res) => {
                 });
               }
               res.json({
-                message: "Great! Now you can login with the new password",
+                message: `Great! Now you can login with the new password ${result}`,
               });
             });
           });
         }
       );
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      error: err.message,
+    });
+  }
 };
