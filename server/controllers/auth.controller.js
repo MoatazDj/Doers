@@ -6,6 +6,8 @@ const fetch = require("node-fetch");
 const { validationResult } = require("express-validator");
 //custom error handler to get useful error from database errors
 const { errorHandler } = require("../helpers/dbErrorHandling");
+const jwtDecode = require("jwt-decode");
+const jwtEncode = require("jwt-encode");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.MAIL_KEY);
 const {
@@ -165,11 +167,14 @@ exports.forgotController = async (req, res) => {
           error: "User with that email does not exist",
         });
       }
+      const hashed = user.hashed_password;
+      const slata = user.salt;
+      const newToken = hashed + "-" + slata;
       const token = await jwt.sign(
         {
           _id: user._id,
         },
-        process.env.JWT_RESET_PASSWORD,
+        newToken,
         {
           expiresIn: "30m",
         }
@@ -199,6 +204,7 @@ exports.forgotController = async (req, res) => {
             await sgMail.send(emailData);
             return res.json({
               message: `Email has been sent to ${email}`,
+              link: `${process.env.CLIENT_URL}/users/password/reset/${token}`,
             });
           }
         }
@@ -222,8 +228,28 @@ exports.resetController = async (req, res) => {
     });
   }
   try {
-    console.log(resetPasswordLink);
+    // const token = resetPasswordLink.slice(43);
+    // console.log(process.env.JWT_RESET_PASSWORD);
+    // var result = await jwt.verify(token, process.env.JWT_RESET_PASSWORD);
+    // console.log(result);
+    // await User.findOne({ name: "Djebali Moataz" }, async (err, docs) => {
+    //   if (err) {
+    //     console.log(err);
+    //   }
+    //   console.log("yoooooo", docs);
+    // });
     if (resetPasswordLink) {
+      // await User.findOne({ resetPasswordLink }, async (err, user) => {
+      //   if (!user || err) {
+      //     return res.status(400).json({
+      //       error: "User with that email does not exist",
+      //     });
+      //   }
+      //   const hashed = user.hashed_password;
+      //   const slata = user.salt;
+      //   const newToken = hashed + "-" + slata;
+      //   console.log(newToken);
+      // });
       jwt.verify(
         resetPasswordLink,
         process.env.JWT_RESET_PASSWORD,
@@ -235,7 +261,7 @@ exports.resetController = async (req, res) => {
           }
           await User.findOne({ resetPasswordLink }, async (err, user) => {
             if (err || !user) {
-              return res.status(400).jlson({
+              return res.status(400).json({
                 error: "Something went wrong. Try Later",
               });
             }
@@ -244,6 +270,7 @@ exports.resetController = async (req, res) => {
               resetPasswordLink: "",
             };
             user = _.extend(user, updatedField);
+            console.log(user);
             user.save(async (err, result) => {
               if (err) {
                 return res.status(400).json({
@@ -261,7 +288,7 @@ exports.resetController = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(400).json({
-      error: err.message,
+      error: error,
     });
   }
 };
