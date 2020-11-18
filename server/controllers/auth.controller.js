@@ -76,7 +76,7 @@ exports.activationController = async (req, res) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decode) => {
       if (err)
         return res.status(401).json({
-          error: "Expired Token. Signup again",
+          error: "Expired link. Signup again",
         });
       const { name, email, password } = decode;
       const salt = await makeSalt();
@@ -228,28 +228,7 @@ exports.resetController = async (req, res) => {
     });
   }
   try {
-    // const token = resetPasswordLink.slice(43);
-    // console.log(process.env.JWT_RESET_PASSWORD);
-    // var result = await jwt.verify(token, process.env.JWT_RESET_PASSWORD);
-    // console.log(result);
-    // await User.findOne({ name: "Djebali Moataz" }, async (err, docs) => {
-    //   if (err) {
-    //     console.log(err);
-    //   }
-    //   console.log("yoooooo", docs);
-    // });
     if (resetPasswordLink) {
-      // await User.findOne({ resetPasswordLink }, async (err, user) => {
-      //   if (!user || err) {
-      //     return res.status(400).json({
-      //       error: "User with that email does not exist",
-      //     });
-      //   }
-      //   const hashed = user.hashed_password;
-      //   const slata = user.salt;
-      //   const newToken = hashed + "-" + slata;
-      //   console.log(newToken);
-      // });
       jwt.verify(
         resetPasswordLink,
         process.env.JWT_RESET_PASSWORD,
@@ -292,3 +271,26 @@ exports.resetController = async (req, res) => {
     });
   }
 };
+
+// const token = resetPasswordLink.slice(43);
+// console.log(process.env.JWT_RESET_PASSWORD);
+// var result = await jwt.verify(token, process.env.JWT_RESET_PASSWORD);
+// console.log(result);
+// await User.findOne({ name: "Djebali Moataz" }, async (err, docs) => {
+//   if (err) {
+//     console.log(err);
+//   }
+//   console.log("yoooooo", docs);
+// });
+// await User.findOne({ resetPasswordLink }, async (err, user) => {
+//   if (!user || err) {
+//     return res.status(400).json({
+//       error: "User with that email does not exist",
+//     });
+//   }
+//   const hashed = user.hashed_password;
+//   const slata = user.salt;
+//   const newToken = hashed + "-" + slata;
+//   console.log(newToken);
+// const token = resetPasswordLink.slice(43);
+// });
