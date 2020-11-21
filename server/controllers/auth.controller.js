@@ -3,11 +3,12 @@ const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 const { OAuth2Client, JWT } = require("google-auth-library");
 const fetch = require("node-fetch");
+const gravatar = require("gravatar");
 const { validationResult } = require("express-validator");
 //custom error handler to get useful error from database errors
 const { errorHandler } = require("../helpers/dbErrorHandling");
-const jwtDecode = require("jwt-decode");
-const jwtEncode = require("jwt-encode");
+// const jwtDecode = require("jwt-decode");
+// const jwtEncode = require("jwt-encode");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.MAIL_KEY);
 const {
@@ -81,9 +82,15 @@ exports.activationController = async (req, res) => {
       const { name, email, password } = decode;
       const salt = await makeSalt();
       const hashed_password = await encryptPassword(password, salt);
+      const avatar = gravatar.url(email, {
+        s: "200",
+        r: "pg",
+        d: "mm",
+      });
       User.create({
         email,
         name,
+        avatar,
         hashed_password,
         salt,
       });
@@ -201,7 +208,7 @@ exports.forgotController = async (req, res) => {
               error: errorHandler(err),
             });
           } else {
-            await sgMail.send(emailData);
+            await await sgMail.send(emailData);
             return res.json({
               message: `Email has been sent to ${email}`,
               link: `${process.env.CLIENT_URL}/users/password/reset/${token}`,
@@ -294,3 +301,4 @@ exports.resetController = async (req, res) => {
 //   console.log(newToken);
 // const token = resetPasswordLink.slice(43);
 // });
+//
