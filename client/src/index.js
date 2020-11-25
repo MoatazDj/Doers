@@ -9,32 +9,39 @@ import Forgot from "./screens/Forgot";
 import Activate from "./screens/Activate";
 import Reset from "./screens/Reset";
 
+import { Provider } from "react-redux";
+import store from "./data/store";
+import Navbar from "./navbar/navbar";
+
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/" exact render={(props) => <App {...props} />} />
-      <Route
-        path="/register"
-        exact
-        render={(props) => <Register {...props} />}
-      />
-      <Route
-        path="/users/activate/:token"
-        exact
-        render={(props) => <Activate {...props} />}
-      />
-      <Route path="/login" exact render={(props) => <Login {...props} />} />
-      <Route
-        path="/users/password/forgot"
-        exact
-        render={(props) => <Forgot {...props} />}
-      />
-      <Route
-        path="/users/password/reset/:token"
-        exact
-        render={(props) => <Reset {...props} />}
-      />
-    </Switch>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <Navbar />
+      <Switch>
+        <Route path="/" exact render={(props) => <App {...props} />} />
+        <Route
+          path="/register"
+          exact
+          render={(props) => <Register {...props} />}
+        />
+        <Route
+          path="/users/activate/:token"
+          exact
+          render={(props) => <Activate {...props} />}
+        />
+        <Route path="/login" exact render={(props) => <Login {...props} />} />
+        <Route
+          path="/users/password/forgot"
+          exact
+          render={(props) => <Forgot {...props} />}
+        />
+        <Route
+          path="/users/password/reset/:token"
+          exact
+          render={(props) => <Reset {...props} />}
+        />
+      </Switch>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );
