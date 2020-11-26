@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "../containers/container";
+import NavbarList from "./navbar.list";
 import NavbarToggle from "./navbar.toggle";
 
 const Navbar = () => {
@@ -18,7 +19,9 @@ const Navbar = () => {
           </Link>
           <NavbarToggle active={active} menuState={menuState} />
         </div>
-        <div className={`${active ? "flex" : "hidden"} md:flex`}></div>
+        <div className={`${active ? "flex" : "hidden"} md:flex`}>
+          <NavbarList />
+        </div>
       </nav>
     </Container>
   );

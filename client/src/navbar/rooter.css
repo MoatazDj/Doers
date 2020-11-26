@@ -18,8 +18,8 @@
   background-color: #6f84f8;
   height: var(--bar-height);
   width: var(--menu-width);
-  transition: opacity 0s var(--timing-animation) top var(--timing-animation)
-      var(--timing-animation),
+  transition: opacity 0s var(--timing-animation),
+    top var(--timing-animation) var(--timing-animation),
     bottom var(--timing-animation) var(--timing-animation),
     transform var(--timing-animation);
 }
@@ -33,7 +33,7 @@
 }
 
 .menu-icon--isActive .menu-icon__bar {
-  transition: opacity 0s var(--timing-animation) top var(--timing-animation),
+  transition: opacity 0s var(--timing-animation), top var(--timing-animation),
     bottom var(--timing-animation),
     transform var(--timing-animation) var(--timing-animation);
 }
