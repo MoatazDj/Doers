@@ -8,6 +8,7 @@ import Register from "./screens/Register";
 import Forgot from "./screens/Forgot";
 import Activate from "./screens/Activate";
 import Reset from "./screens/Reset";
+import "./assets/main.css";
 
 import { Provider } from "react-redux";
 import store from "./data/store";
