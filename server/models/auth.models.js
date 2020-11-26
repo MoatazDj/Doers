@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema(
       data: String,
       default: "",
     },
+    history: {
+      type: Array,
+      default: [],
+    },
   },
   { timeStamp: true }
 );

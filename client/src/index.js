@@ -17,7 +17,7 @@ import Navbar from "./navbar/navbar";
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
       <Switch>
         <Route path="/" exact render={(props) => <App {...props} />} />
         <Route

@@ -302,3 +302,56 @@ exports.resetController = async (req, res) => {
 // const token = resetPasswordLink.slice(43);
 // });
 //
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT);
+
+exports.googleController = async (req, res) => {
+  const { idToken } = req.body;
+  try {
+    const response = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT,
+    });
+    const { email_verified, name, email } = response.payload;
+    if (email_verified) {
+      User.findOne({ email }).exec((err, user) => {
+        if (user) {
+          const token = jwt.sign(
+            { _id: user._id },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: "7d" }
+          );
+          const { _id, email, name, role } = user;
+          return res.json({
+            token,
+            user: { _id, email, name, role },
+          });
+        } else {
+          let password = email + process.env.ACCESS_TOKEN_SECRET;
+          user = new User(name, email, password);
+          user.save(async (err, save) => {
+            if (err) {
+              return res.status(400).json({
+                error: errorHandler(err),
+              });
+            }
+            const token = jwt.sign(
+              { _id: data._id },
+              process.env.ACCESS_TOKEN_SECRET,
+              { expiresIn: "7d" }
+            );
+            const { _id, email, name, role } = data;
+            return res.json({
+              token,
+              user: { _id, email, name, role },
+            });
+          });
+        }
+      });
+    }
+  } catch (error) {
+    return res.status(400).json({
+      error: "Google login failed. try again",
+    });
+  }
+};

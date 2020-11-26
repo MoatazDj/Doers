@@ -15,7 +15,10 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="flex justify-between w-full md md:w-32 items-center">
           <Link to="/" className="logo w-16 animate">
-            <img src={require("../assets/esta.png")} alt="Main Logo" />
+            <img
+              src="https://tailwindui.com/img/logos/v1/workflow-mark-on-white.svg"
+              alt="Main Logo"
+            />
           </Link>
           <NavbarToggle active={active} menuState={menuState} />
         </div>

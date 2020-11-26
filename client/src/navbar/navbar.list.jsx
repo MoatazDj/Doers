@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import NavItem from "./navbar.items";
 import Button from "../Buttons/button";
+
 const NavbarList = ({ history }) => {
   const isActive = (history, path) => {
     if (history.location.pathname === path) {
