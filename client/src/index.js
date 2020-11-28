@@ -9,13 +9,14 @@ import Forgot from "./screens/Forgot";
 import Activate from "./screens/Activate";
 import Reset from "./screens/Reset";
 import "./assets/main.css";
-
+import Navbar from "./navbar/navbar";
 import { Provider } from "react-redux";
 import store from "./data/store";
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
+      <Navbar></Navbar>
       <Switch>
         <Route path="/" exact render={(props) => <App {...props} />} />
         <Route

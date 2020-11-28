@@ -7,9 +7,7 @@ const Button = ({ isButton = true, title = "", href, moreStyle }) => {
   return (
     <Fragment>
       {isButton ? (
-        <Button className={style}>
-          {title}
-        </Button>
+        <button className={style}>{title}</button>
       ) : (
         <Link to={href} className={style}>
           {title}

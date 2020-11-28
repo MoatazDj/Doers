@@ -23,7 +23,7 @@ const Navbar = () => {
           <NavbarToggle active={active} menuState={menuState} />
         </div>
         <div className={`${active ? "flex" : "hidden"} md:flex`}>
-          {/* <NavbarList /> */}
+          <NavbarList />
         </div>
       </nav>
     </Container>
