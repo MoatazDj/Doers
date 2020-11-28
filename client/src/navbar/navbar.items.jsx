@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const NavItem = ({ href, listStyle, name }) => {
+const NavItem = ({ link, listStyle, name }) => {
+  console.log(listStyle);
   return (
     <li
-      className={`hover:text-primart animate px-3 py-2 cursor-pointer rounded-md${listStyle}`}
+      className={`hover:text-primart animate px-3 py-2 cursor-pointer rounded-md ${listStyle}`}
     >
-      <Link to={href}>
+      <Link exact to={link}>
         <span>{name}</span>
       </Link>
     </li>

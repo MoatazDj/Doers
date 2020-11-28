@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Switch } from "react-router-dom";
 import NavItem from "./navbar.items";
 import Button from "../Buttons/button";
 
@@ -11,6 +11,7 @@ const NavbarList = ({ history }) => {
       return "";
     }
   };
+
   return (
     <ul className="font-bold flex-wrap flex md:mr-5 flex-col md:flex-row text-center">
       <NavItem link="/" name="Home" listStyle={isActive(history, "/")} />
@@ -24,7 +25,13 @@ const NavbarList = ({ history }) => {
         name="Dashboard"
         listStyle={isActive(history, "/dashboard")}
       />
-      <Button title="SignOut" moreStyle="hover:text-primary" />
+      <Button
+        title="SignOut"
+        action={() => {
+          console.log("wassap");
+        }}
+        moreStyle="hover:text-primary"
+      />
       <Button
         isButton={false}
         href="/cart"
