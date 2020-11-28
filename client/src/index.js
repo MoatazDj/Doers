@@ -12,12 +12,10 @@ import "./assets/main.css";
 
 import { Provider } from "react-redux";
 import store from "./data/store";
-import Navbar from "./navbar/navbar";
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      {/* <Navbar /> */}
       <Switch>
         <Route path="/" exact render={(props) => <App {...props} />} />
         <Route
