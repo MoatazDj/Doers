@@ -1,7 +1,7 @@
 const User = require("./../models/auth.models");
 const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
-const { OAuth2Client, JWT } = require("google-auth-library");
+const { OAuth2Client } = require("google-auth-library");
 const fetch = require("node-fetch");
 const gravatar = require("gravatar");
 const { validationResult } = require("express-validator");
@@ -305,56 +305,58 @@ exports.resetController = async (req, res) => {
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT);
 exports.googleController = async (req, res) => {
   const { idToken } = req.body;
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const firstError = errors.array.map((error) => error.msg)[0];
-    return res.status(422).json({
-      error: firstError,
-    });
-  }
-  try {
-    const response = await client.verifyIdToken({
-      idToken,
-      audience: process.env.GOOGLE_CLIENT,
-    });
-
-    const { email_verified, name, email } = response.payload;
-    if (email_verified) {
-      console.log(email_verified);
-      await User.findOne({ email }).exec(async (err, user) => {
-        if (user) {
-          const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-            expiresIn: "7d",
-          });
-          const { _id, email, name, role } = user;
-          return res.json({
-            token,
-            user: { _id, email, name, role },
-          });
-        } else {
-          let password = email + process.env.JWT_SECRET;
-          user = new User({name, email, password});
-          user.save(async (err, save) => {
-            if (err) {
-              return res.status(400).json({
-                error: errorHandler(err),
-              });
-            }
-            const token = jwt.sign({ _id: save._id }, process.env.JWT_SECRET, {
+  client
+    .verifyIdToken({ idToken })
+    // .verifyIdTokenAsync({
+    //   idToken,
+    //   audience: process.env.GOOGLE_CLIENT,
+    // })
+    .then((response) => {
+      const { email_verified, name, email } = response.getPayload();
+      if (email_verified) {
+        User.findOne({ email }).exec(async (err, user) => {
+          if (user) {
+            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
               expiresIn: "7d",
             });
-            const { _id, email, name, role } = save;
+            const { _id, email, name, role } = user;
             return res.json({
               token,
               user: { _id, email, name, role },
             });
-          });
-        }
-      });
-    }
-  } catch (error) {
-    return res.status(400).json({
-      error: "Google login failed. try again",
+          } else {
+            let password = email + process.env.JWT_SECRET;
+            user = new User({ name, email, password });
+            user.save(async (err, save) => {
+              if (err) {
+                return res.status(400).json({
+                  error: errorHandler(err),
+                });
+              }
+              const token = jwt.sign(
+                { _id: data._id },
+                process.env.JWT_SECRET,
+                {
+                  expiresIn: "7d",
+                }
+              );
+              const { _id, email, name, role } = data;
+              return res.json({
+                token,
+                user: { _id, email, name, role },
+              });
+            });
+          }
+        });
+      } else {
+        return res.status(400).json({
+          error: "Google login failed. try again",
+        });
+      }
     });
-  }
+  // .catch((error) => {
+  //   return res.status(400).json({
+  //     error: "Google login failed. try again",
+  //   });
+  // });
 };

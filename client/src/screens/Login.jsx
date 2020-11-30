@@ -25,7 +25,7 @@ const Login = ({ history }) => {
       .then((res) => {
         informParent(res);
       })
-      .catch((error) => {
+      .catch((err) => {
         toast.error("Google login error");
       });
   };
