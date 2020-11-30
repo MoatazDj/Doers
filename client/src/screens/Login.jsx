@@ -17,18 +17,17 @@ const Login = ({ history }) => {
   const handleChange = (text) => (e) => {
     setFormData({ ...fromData, [text]: e.target.value });
   };
-  const sendGoogleToken = async (tokenId) => {
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/googlelogin`,
-        {
-          idToken: tokenId,
-        }
-      );
-      informParent(res);
-    } catch (error) {
-      toast.error("Google login error");
-    }
+  const sendGoogleToken = (tokenId) => {
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/googlelogin`, {
+        idToken: tokenId,
+      })
+      .then((res) => {
+        informParent(res);
+      })
+      .catch((error) => {
+        toast.error("Google login error");
+      });
   };
   const informParent = (response) => {
     authenthicate(response, () => {

@@ -122,7 +122,7 @@ exports.loginController = async (req, res) => {
     }).exec(async (err, user) => {
       if (!user || err) {
         return res.status(400).json({
-          error: "Email does not exist you asshole. Signup!",
+          error: "Email does not exist. Signup!",
         });
       }
       if (!authenthicate(password)) {
@@ -302,45 +302,48 @@ exports.resetController = async (req, res) => {
 // const token = resetPasswordLink.slice(43);
 // });
 //
-
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT);
-
 exports.googleController = async (req, res) => {
   const { idToken } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const firstError = errors.array.map((error) => error.msg)[0];
+    return res.status(422).json({
+      error: firstError,
+    });
+  }
   try {
     const response = await client.verifyIdToken({
       idToken,
       audience: process.env.GOOGLE_CLIENT,
     });
+
     const { email_verified, name, email } = response.payload;
     if (email_verified) {
-      User.findOne({ email }).exec((err, user) => {
+      console.log(email_verified);
+      await User.findOne({ email }).exec(async (err, user) => {
         if (user) {
-          const token = jwt.sign(
-            { _id: user._id },
-            process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "7d" }
-          );
+          const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "7d",
+          });
           const { _id, email, name, role } = user;
           return res.json({
             token,
             user: { _id, email, name, role },
           });
         } else {
-          let password = email + process.env.ACCESS_TOKEN_SECRET;
-          user = new User(name, email, password);
+          let password = email + process.env.JWT_SECRET;
+          user = new User({name, email, password});
           user.save(async (err, save) => {
             if (err) {
               return res.status(400).json({
                 error: errorHandler(err),
               });
             }
-            const token = jwt.sign(
-              { _id: data._id },
-              process.env.ACCESS_TOKEN_SECRET,
-              { expiresIn: "7d" }
-            );
-            const { _id, email, name, role } = data;
+            const token = jwt.sign({ _id: save._id }, process.env.JWT_SECRET, {
+              expiresIn: "7d",
+            });
+            const { _id, email, name, role } = save;
             return res.json({
               token,
               user: { _id, email, name, role },
