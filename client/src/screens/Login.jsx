@@ -5,8 +5,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import authSvg from "../assets/auth.jpg";
 import { isAuth, authenthicate } from "../helpers/auth";
-import { GoogleLogin } from "react-google-login";
-
+// import { GoogleLogin } from "react-google-login";
+import app from "../firebase";
 const Login = ({ history }) => {
   const [fromData, setFormData] = useState({
     email: "",
@@ -17,29 +17,47 @@ const Login = ({ history }) => {
   const handleChange = (text) => (e) => {
     setFormData({ ...fromData, [text]: e.target.value });
   };
-  const sendGoogleToken = (tokenId) => {
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/googlelogin`, {
-        idToken: tokenId,
+
+  const onSubmit = () => {
+    var provider = new app.auth.GoogleAuthProvider();
+    app
+      .auth()
+      .signInWithPopup(provider)
+      .then(function (result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        console.log(result);
       })
-      .then((res) => {
-        informParent(res);
-      })
-      .catch((err) => {
-        toast.error("Google login error");
+      .catch(function (error) {
+        console.log(error);
       });
   };
-  const informParent = (response) => {
-    authenthicate(response, () => {
-      isAuth() && isAuth.role === "admin"
-        ? history.push("/admin")
-        : history.push("/private");
-    });
-  };
-  const responseGoogle = (response) => {
-    console.log(response);
-    sendGoogleToken(response.tokenId);
-  };
+  // const sendGoogleToken = async (tokenId) => {
+  //   try {
+  //     const res = await axios.post(
+  //       `${process.env.REACT_APP_API_URL}/googlelogin`,
+  //       {
+  //         idToken: tokenId,
+  //       }
+  //     );
+  //     informParent(res);
+  //   } catch (error) {
+  //     toast.error("Google login error");
+  //   }
+  // };
+  // const informParent = (response) => {
+  //   authenthicate(response, () => {
+  //     isAuth() && isAuth.role === "admin"
+  //       ? history.push("/admin")
+  //       : history.push("/private");
+  //   });
+  // };
+  // const responseGoogle = (response) => {
+  //   console.log(response);
+  //   sendGoogleToken(response.tokenId);
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (email && password1) {
@@ -127,21 +145,21 @@ const Login = ({ history }) => {
                 </div>
               </div>
               <div className="flex flex-col items-center">
-                <GoogleLogin
+                {/* <GoogleLogin
                   clientId={`${process.env.REACT_APP_GOOGLE_CLIENT}`}
                   onSuccess={responseGoogle}
                   onFailure={responseGoogle}
                   cookiePolicy={"single_host_origin"}
-                  render={(renderProps) => (
-                    <button
-                      onClick={renderProps.onClick}
-                      disabled={renderProps.disabled}
-                      className="mt-3 w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
-                    >
-                      Sign In with Google
-                    </button>
-                  )}
-                ></GoogleLogin>
+                  render={(renderProps) => ( */}
+                <button
+                  onClick={onSubmit}
+                  // disabled={renderProps.disabled}
+                  className="mt-3 w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+                >
+                  Sign In with Google
+                </button>
+                {/* )}
+                ></GoogleLogin> */}
                 <a
                   href="/register"
                   className="w-full max-w-xs font-bold shadow-sm rounded-lg 

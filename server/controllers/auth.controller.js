@@ -277,44 +277,20 @@ exports.resetController = async (req, res) => {
       error: error,
     });
   }
-};
+}; //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Not Finished
 
-// const token = resetPasswordLink.slice(43);
-// console.log(process.env.JWT_RESET_PASSWORD);
-// var result = await jwt.verify(token, process.env.JWT_RESET_PASSWORD);
-// console.log(result);
-// await User.findOne({ name: "Djebali Moataz" }, async (err, docs) => {
-//   if (err) {
-//     console.log(err);
-//   }
-//   console.log("yoooooo", docs);
-// });
-// await User.findOne({ resetPasswordLink }, async (err, user) => {
-//   if (!user || err) {
-//     return res.status(400).json({
-//       error: "User with that email does not exist",
-//     });
-//   }
-//   const hashed = user.hashed_password;
-//   const slata = user.salt;
-//   const newToken = hashed + "-" + slata;
-//   console.log(newToken);
-// const token = resetPasswordLink.slice(43);
-// });
-//
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT);
-exports.googleController = async (req, res) => {
+exports.googleController = (req, res) => {
   const { idToken } = req.body;
   client
-    .verifyIdToken({ idToken })
-    // .verifyIdTokenAsync({
-    //   idToken,
-    //   audience: process.env.GOOGLE_CLIENT,
-    // })
-    .then((response) => {
-      const { email_verified, name, email } = response.getPayload();
+    .verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT,
+    })
+    .then((resp) => {
+      const { email_verified, name, email } = resp.getPayload();
       if (email_verified) {
-        User.findOne({ email }).exec(async (err, user) => {
+        User.findOne({ email }).exec((err, user) => {
           if (user) {
             const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
               expiresIn: "7d",
@@ -327,7 +303,7 @@ exports.googleController = async (req, res) => {
           } else {
             let password = email + process.env.JWT_SECRET;
             user = new User({ name, email, password });
-            user.save(async (err, save) => {
+            user.save((err, save) => {
               if (err) {
                 return res.status(400).json({
                   error: errorHandler(err),
@@ -353,10 +329,11 @@ exports.googleController = async (req, res) => {
           error: "Google login failed. try again",
         });
       }
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(400).json({
+        error: "Google login failed. try again",
+      });
     });
-  // .catch((error) => {
-  //   return res.status(400).json({
-  //     error: "Google login failed. try again",
-  //   });
-  // });
-};
+}; //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Not Finished
