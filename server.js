@@ -13,6 +13,7 @@ require("dotenv").config({
 
 connectDB();
 app.use(cors());
+app.use(morgan("dev"));
 // app.use(express.static(pathFile));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());

@@ -2,11 +2,12 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { connect } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import authSvg from "../assets/auth.jpg";
 import { isAuth } from "../helpers/auth";
-
-const Register = () => {
+import { register } from "../data/reducers/auth";
+const Register = ({ register }) => {
   const [fromData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,30 +22,17 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (name && email && password1) {
-      if (password1 === password2) {
-        try {
-          const res = await axios.post(
-            `${process.env.REACT_APP_API_URL}/register`,
-            {
-              name,
-              email,
-              password: password1,
-            }
-          );
-          setFormData({
-            ...fromData,
-            name: "",
-            email: "",
-            password1: "",
-            password2: "",
-          });
-          toast.success(res.data.message);
-        } catch (err) {
-          toast.error(err.response.data.error);
-        }
-      } else toast.error("Passwords dosen't match");
-    } else toast.error("Please fill all fields");
+    if (!(name && email && password1))
+      return toast.error("Please fill all fields");
+    if (password1 !== password2) return toast.error("Passwords dosen't match");
+    register({ name, email, password1 });
+    setFormData({
+      ...fromData,
+      name: "",
+      email: "",
+      password1: "",
+      password2: "",
+    });
   };
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
@@ -146,4 +134,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default connect(null, { register })(Register);

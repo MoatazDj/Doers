@@ -48,6 +48,7 @@
     "autoprefixer": "^9.8.6",
     "postcss": "^8.1.10",
     "postcss-cli": "^8.3.0",
+    "redux-logger": "^3.0.6",
     "tailwindcss": "^2.0.1"
   }
 }
