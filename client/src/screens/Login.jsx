@@ -18,20 +18,20 @@ const Login = ({ history }) => {
     setFormData({ ...fromData, [text]: e.target.value });
   };
 
-  // const onSubmit = () => {
-  //   var provider = new app.auth.GoogleAuthProvider();
-  //   app
-  //     .auth()
-  //     .signInWithPopup(provider)
-  //     .then(function (result) {
-  //       var token = result.credential.accessToken;
-  //       var user = result.user;
-  //       console.log(result);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
+  const onSubmit = () => {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      // ...
+      console.log(user);
+      console.log(token)
+    }).catch(function(error) {
+     console.log(error);
+    });
+  };
   // const sendGoogleToken = async (tokenId) => {
   //   try {
   //     const res = await axios.post(
@@ -153,6 +153,7 @@ const Login = ({ history }) => {
                   // onClick={onSubmit}
                   // disabled={renderProps.disabled}
                   className="mt-3 w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+                  onSubmit = {onSubmit}
                 >
                   Sign In with Google
                 </button>
