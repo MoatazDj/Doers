@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import authSvg from "../assets/auth.jpg";
 import { isAuth, authenthicate } from "../helpers/auth";
+import firebase from "firebase";
 // import { GoogleLogin } from "react-google-login";
 // import app from "../firebase";
 const Login = ({ history }) => {
