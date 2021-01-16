@@ -1,11 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import {
-  toast,
-  ToastContainer,
-} from "../../Redux/reducers/node_modules/react-toastify";
-import "../RegisterPage/node_modules/react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import authSvg from "../../assets/auth.jpg";
 import { isAuth, authenthicate } from "../../helpers/auth";
 // import { GoogleLogin } from "react-google-login";
@@ -156,7 +153,7 @@ const Login = ({ history }) => {
                   // onClick={onSubmit}
                   // disabled={renderProps.disabled}
                   className="mt-3 w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
-                  onSubmit={onSubmit()}
+                  // onSubmit={onSubmit()}
                 >
                   Sign In with Google
                 </button>

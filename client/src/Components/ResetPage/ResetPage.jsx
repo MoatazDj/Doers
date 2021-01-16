@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import authSvg from "../../assets/auth.jpg";
-import {
-  toast,
-  ToastContainer,
-} from "../../Redux/reducers/node_modules/react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 
 const Reset = ({ match }) => {

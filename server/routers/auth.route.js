@@ -15,9 +15,9 @@ const {
   googleController,
 } = require("../controllers/auth.controller.js");
 
-router.post("/register", registerController)
-router.post("/login", loginController)
-router.post("/activation", activationController)
+router.post("/register", registerController);
+router.post("/login", loginController);
+router.post("/activation", activationController);
 router.put("/password/forgot", forgotController);
 router.put("/password/reset", resetController);
 router.post("/googlelogin", googleController);
