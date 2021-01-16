@@ -1,15 +1,15 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "react-toastify/dist/react-toastify.cjs.development";
-import Home from "./Screens/Home";
-import Login from "./Screens/Login.jsx";
-import Register from "./Screens/Register";
-import Forgot from "./Screens/Forgot";
-import Activate from "./Screens/Activate";
-import Reset from "./Screens/Reset";
-import "./assets/main.css";
+import Home from "../Components/HomePage/HomePage";
+import Login from "../Components/LoginPage/LoginPage";
+import Register from "../Components/RegisterPage/RegisterPage";
+import Forgot from "../Components/ForgotPage/ForgotPage";
+import Activate from "../Components/ActivatePage/ActivatePage";
+import Reset from "../Components/ResetPage/ResetPage";
+import "../assets/main.css";
 
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../Components/Navbar/Navbar";
 
 const Routes = () => {
   return (

@@ -1,12 +1,16 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import {
+  toast,
+  ToastContainer,
+} from "../../Redux/reducers/node_modules/react-toastify";
 import { connect } from "react-redux";
 import "../LoginPage/node_modules/react-toastify/dist/ReactToastify.css";
-import authSvg from "../assets/auth.jpg";
-import { isAuth } from "../helpers/auth";
-import { register } from "../data/reducers/auth";
+import authSvg from "../../assets/auth.jpg";
+import { isAuth } from "../../helpers/auth";
+import { register } from "../../Redux/reducers/auth";
+
 const Register = ({ register }) => {
   const [fromData, setFormData] = useState({
     name: "",

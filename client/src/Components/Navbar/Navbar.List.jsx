@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import NavItem from "./Navbar.Items";
-import Button from "../../Buttons/button";
+import Button from "../ButtonItem/Button.Item";
 
 const NavbarList = ({ history }) => {
   const isActive = (history, path) => {

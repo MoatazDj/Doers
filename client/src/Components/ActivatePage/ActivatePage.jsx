@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import {
+  toast,
+  ToastContainer,
+} from "../../Redux/reducers/node_modules/react-toastify";
 import "../RegisterPage/node_modules/react-toastify/dist/ReactToastify.css";
-import authSvg from "../assets/auth.jpg";
-import { isAuth, authenthicate } from "../helpers/auth";
+import authSvg from "../../assets/auth.jpg";
+import { isAuth, authenthicate } from "../../helpers/auth";
 import jwt from "jsonwebtoken";
 
 const Activate = ({ match }) => {

@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import {
+  toast,
+  ToastContainer,
+} from "../../Redux/reducers/node_modules/react-toastify";
 import "../RegisterPage/node_modules/react-toastify/dist/ReactToastify.css";
-import authSvg from "../assets/auth.jpg";
-import { isAuth } from "../helpers/auth";
+import authSvg from "../../assets/auth.jpg";
+import { isAuth } from "../../helpers/auth";
 
 const Forgot = () => {
   const [fromData, setFormData] = useState({
