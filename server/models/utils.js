@@ -1,6 +1,5 @@
 const { genSalt, hash, compare } = require("bcryptjs");
-const crypto = require("crypto");
-const { timeStamp, Console } = require("console");
+
 module.exports = {
   async makeSalt() {
     //    return Math.round(new Date().valueOf() * Math.random()) + ""

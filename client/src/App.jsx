@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import Routes from "./routes";
+import Routes from "./Components/Routes/routes";
 
 import { Provider } from "react-redux";
-import store from "./data/store";
+import store from "./Redux/data/store";
 function App() {
   return (
     <Provider store={store}>
