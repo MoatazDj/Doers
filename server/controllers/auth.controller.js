@@ -18,7 +18,6 @@ const {
 } = require("../models/utils.js");
 
 exports.registerController = async (req, res) => {
-  console.log(req.body);
   const { name, email, password } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -104,6 +103,16 @@ exports.activationController = async (req, res) => {
     return res.json({
       message: "Error happening. Please try again",
     });
+  }
+};
+
+exports.checkAuthController = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
   }
 };
 
