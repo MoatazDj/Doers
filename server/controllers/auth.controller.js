@@ -1,8 +1,6 @@
 const User = require("./../models/auth.models");
 const jwt = require("jsonwebtoken");
-const expressJwt = require("express-jwt");
 const { OAuth2Client } = require("google-auth-library");
-const fetch = require("node-fetch");
 const gravatar = require("gravatar");
 const { validationResult } = require("express-validator");
 //custom error handler to get useful error from database errors
@@ -32,7 +30,7 @@ exports.registerController = async (req, res) => {
     });
     if (user)
       return res.status(400).json({
-        error: "Email is taken",
+        error: "User already exists",
       });
     const token = await jwt.sign(
       {
@@ -108,7 +106,7 @@ exports.activationController = async (req, res) => {
 
 exports.checkAuthController = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user._id).select("-password");
     res.json(user);
   } catch (error) {
     console.log(error);

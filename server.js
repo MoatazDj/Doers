@@ -12,8 +12,8 @@ require("dotenv").config({
 });
 
 connectDB();
-app.use(cors());
 app.use(morgan("dev"));
+app.use(cors());
 // app.use(express.static(pathFile));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
@@ -32,7 +32,7 @@ const authRouter = require("./server/routers/auth.route.js");
 
 app.use("/api", authRouter);
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: "Page not found",
