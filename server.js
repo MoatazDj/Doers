@@ -29,8 +29,10 @@ app.use(bodyparser.json());
 // }
 
 const authRouter = require("./server/routers/auth.route.js");
+const categoryRouter = require("./server/routers/category.route");
 
 app.use("/api", authRouter);
+app.use("/api/category", categoryRouter);
 
 app.use((req, res) => {
   res.status(404).json({

@@ -1,4 +1,4 @@
-const User = require("./../models/auth.models");
+const User = require("./../models/auth.model");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const gravatar = require("gravatar");
