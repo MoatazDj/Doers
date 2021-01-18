@@ -35,3 +35,7 @@ exports.getAllCategoriesController = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+exports.getCategoryByIdController = async (req, res) => {
+    res.json(req.category)
+};
