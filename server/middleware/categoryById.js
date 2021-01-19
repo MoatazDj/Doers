@@ -2,16 +2,16 @@ const mongoose = require("mongoose");
 const Category = require("../models/category.model");
 
 module.exports = async function (req, res, next) {
-  const { _id } = req.params;
+  const { categoryId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(_id)) {
+  if (!mongoose.Types.ObjectId.isValid(categoryId)) {
     return res.status(403).json({
       error: "Category not valid",
     });
   }
 
   try {
-    let category = await Category.findById({ _id });
+    let category = await Category.findById({ categoryId });
 
     if (!category) {
       return res.status(403).json({
